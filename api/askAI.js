@@ -1,4 +1,3 @@
-// File: /api/askAI.js
 import Anthropic from '@anthropic-ai/sdk';
 
 const anthropic = new Anthropic({
@@ -6,21 +5,16 @@ const anthropic = new Anthropic({
 });
 
 export default async function handler(req, res) {
-  // Set the security headers for all responses to allow your frontend to connect.
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // This new block handles the browser's preflight request and adds security headers
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow any origin to access this resource
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // This new block correctly handles the browser's security "phone call".
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // This is your existing logic to handle the actual request.
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Only POST requests allowed' });
-  }
-
+  // The rest of your function logic
   const { prompt } = req.body;
 
   if (!prompt) {
